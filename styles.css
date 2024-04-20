@@ -1,0 +1,11 @@
+body {
+    width: 150px;
+    height: 400px;
+    text-align: center;
+}
+
+.timeInput {
+    display: inline;
+    width: 30px;
+    margin-bottom: 10px;
+}

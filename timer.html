@@ -1,11 +1,28 @@
 <!DOCTYPE html>
 
 <head>
-
+    <link rel="stylesheet" href="styles.css" />
+    <script src="timer.js"></script>
 </head>
 
 <body>
     <h1>Timer</h1>
-    <h3 class="timeRemaining">60:00</h3>
+    <div id="timeInput">
+        <input class="timeInput" type="number" title="Hours">
+        <input class="timeInput" type="number">
+        <input class="timeInput" type="number">
+    </div>
     <button>Start timer</button>
+    <div>
+        <h3 class="info">Time started:</h3>    
+        <h3 id="timeStarted"></h3>
+    </div>
+    <div>
+        <h3 class="info">Time remaining:</h3>
+        <h3 id="timeRemaining">60:00</h3>
+    </div>
+    <div>
+        <h3>Expected finish time: </h3>
+        <h3 id="finishTime"></h3>
+    </div>
 </body>
