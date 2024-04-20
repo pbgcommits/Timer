@@ -1,0 +1,12 @@
+{
+    "manifest_version": 3,
+    "name": "Timer",
+    "description": "A simple timer extension for Chrome.",
+    "version": "0.1",
+    "action": {
+      "default_popup": "timer.html"
+    },
+    "icons": {
+      
+    }
+  }
