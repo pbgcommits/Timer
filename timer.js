@@ -38,14 +38,14 @@ function startTimer() {
         minutes = Math.floor((timerLength / 60000) % 60);
         seconds = Math.round((timerLength / 1000) % 60);
         document.getElementById("timeRemaining").innerText = formatTime(hours, minutes, seconds);
-        if (timerLength < 0) {
-            stopTimer();
-        }
         if (minutes >= 10) {
             chrome.action.setBadgeText({ text: minutes + 'm' });
         }
         else {
             chrome.action.setBadgeText({ text: minutes + ":" + seconds.toString().padStart(2, "0") });
+        }
+        if (timerLength < 0) {
+            stopTimer();
         }
     }, 1000)
 }
@@ -53,6 +53,7 @@ function startTimer() {
 function stopTimer() {
     clearInterval(timerInterval);
     document.getElementById("timeRemaining").innerText = formatTime(0, 0, 0);
+    chrome.action.setBadgeText({});
     window.alert("Timer done!");
 }
 
@@ -62,4 +63,4 @@ function formatTime(hours, minutes, seconds) {
 
 addEventListener("DOMContentLoaded", initTimer);
 // chrome.action.setBadgeBackgroundColor({ color: 'green' });
-chrome.action.setBadgeText({ text: null});
+chrome.action.setBadgeText({});
