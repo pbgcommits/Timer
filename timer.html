@@ -7,12 +7,15 @@
 
 <body>
     <h1>Timer</h1>
-    <div id="timeInput">
-        <input class="timeInput" type="number" title="Hours">
-        <input class="timeInput" type="number">
-        <input class="timeInput" type="number">
-    </div>
-    <button>Start timer</button>
+    <!-- <form id="timerInput" onsubmit=""> -->
+        <div id="timeInput">
+            <input class="timeInput" type="number" id="hours">h
+            <input class="timeInput" type="number" id="minutes">m
+            <input class="timeInput" type="number" id="seconds">s
+        </div>
+        <button id="timerToggle">Start timer</button>
+        <button id="timerReset">Reset timer</button>
+    <!-- </form> -->
     <div>
         <h3 class="info">Time started:</h3>    
         <h3 id="timeStarted"></h3>
