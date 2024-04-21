@@ -41,8 +41,8 @@ function startTimer() {
         if (timerLength < 0) {
             stopTimer();
         }
-        if (hours >= 1) {
-            chrome.action.setBadgeText({ text: hours+ ":" + minutes.toString().padStart(2, "0")});
+        if (minutes >= 10) {
+            chrome.action.setBadgeText({ text: minutes + 'm' });
         }
         else {
             chrome.action.setBadgeText({ text: minutes + ":" + seconds.toString().padStart(2, "0") });
@@ -61,5 +61,5 @@ function formatTime(hours, minutes, seconds) {
 }
 
 addEventListener("DOMContentLoaded", initTimer);
-
-chrome.action.setBadgeText({ text: 'grr' });
+// chrome.action.setBadgeBackgroundColor({ color: 'green' });
+chrome.action.setBadgeText({ text: null});
