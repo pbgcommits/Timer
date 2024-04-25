@@ -11,3 +11,4 @@ Simple timer extension for Chrome.
 - Add a reset timer button
 - Store previously used time
 - Option for favourite times? 
+- Make it look nice

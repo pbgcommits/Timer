@@ -38,7 +38,10 @@ function startTimer() {
         minutes = Math.floor((timerLength / 60000) % 60);
         seconds = Math.round((timerLength / 1000) % 60);
         document.getElementById("timeRemaining").innerText = formatTime(hours, minutes, seconds);
-        if (minutes >= 10) {
+        if (hours >= 1) {
+            chrome.action.setBadgeText({ text: hours + 'h' + minutes });
+        }
+        else if (minutes >= 10) {
             chrome.action.setBadgeText({ text: minutes + 'm' });
         }
         else {
