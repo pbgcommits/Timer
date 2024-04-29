@@ -31,12 +31,14 @@ function initTimer() {
 
 function startTimer() {
     timerInterval = setInterval(function() {
-        // Account for inaccuracy in timer interval
         secondsPassed++;
+        // Account for inaccuracy in timer interval
         timerLength -= 1000 + (Date.now()-beginTime.getTime()) - 1000 * secondsPassed;
         hours = Math.floor(timerLength / 3600000);
-        minutes = Math.floor((timerLength / 60000) % 60);
-        seconds = Math.round((timerLength / 1000) % 60);
+        // The +1 and -1 make it show x minutes, 0 seconds instead of x-1 minutes, 60 seconds
+        seconds = Math.round(((timerLength / 1000)+1) % 60)-1;
+        // "(seconds ? 0 : 1)" makes it show x minutes, 0 seconds instead of x-1 minutes, 0 seconds
+        minutes = Math.floor(((timerLength / 60000)) % 60) + (seconds ? 0 : 1);
         document.getElementById("timeRemaining").innerText = formatTime(hours, minutes, seconds);
         if (hours >= 1) {
             chrome.action.setBadgeText({ text: hours + 'h' + minutes });
@@ -59,11 +61,12 @@ function stopTimer() {
     chrome.action.setBadgeText({});
     window.alert("Timer done!");
 }
-
+// aaaaa
 function formatTime(hours, minutes, seconds) {
     return hours.toString() + "h, " + minutes.toString() + "m, " + seconds.toString() + "s";
 }
 
 addEventListener("DOMContentLoaded", initTimer);
 // chrome.action.setBadgeBackgroundColor({ color: 'green' });
+// TODO might delete this :)
 chrome.action.setBadgeText({});
