@@ -2,10 +2,26 @@ body {
     width: 150px;
     height: 400px;
     text-align: center;
+    background-color: rgb(40, 37, 37);
+    color: white;
 }
 
 .timeInput {
     display: inline;
     width: 30px;
     margin-bottom: 10px;
+}
+
+button, input {
+    /* background-color: rgb(120, 117, 117); */
+    /* color: rgb(224, 224, 224); */
+    font-weight: bold;
+    text-align: right;
+}
+
+/* https://stackoverflow.com/a/23715905/21908056 */
+input[type='number']::-webkit-inner-spin-button, 
+input[type='number']::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    margin: 0;
 }

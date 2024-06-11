@@ -35,6 +35,8 @@ function startTimer() {
     finishTime = new Date(beginTime.getTime() + timerLength);
     document.getElementById("timeStarted").innerText = beginTime.toLocaleTimeString();
     document.getElementById("finishTime").innerText = finishTime.toLocaleTimeString();
+    document.getElementById("timeStarted").style = "";
+    document.getElementById("finishTime").style = "";
     timerInterval = setInterval(function() {
         secondsPassed++;
         // Account for inaccuracy in timer interval
@@ -70,6 +72,10 @@ function pauseTimer() {
     document.getElementById("timerToggle").innerText = "Start timer";
     clearInterval(timerInterval);
     secondsPassed = 0;
+    // document.getElementById("timeStarted").innerText = "";
+    // document.getElementById("finishTime").innerText = "";
+    document.getElementById("timeStarted").style = "text-decoration: line-through";
+    document.getElementById("finishTime").style = "text-decoration: line-through";
 }
 
 function resetTimer() {
