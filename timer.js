@@ -6,40 +6,51 @@ let finishTime;
 let secondsPassed = 0;
 
 function initTimer() {
+    // Default timer is 30 minutes
+    const defaultTime = getDefaultTime();
+    if (!localStorage.getItem("hours")) localStorage.setItem("hours", defaultTime["hours"]);
+    if (!localStorage.getItem("minutes")) localStorage.setItem("minutes", defaultTime["minutes"]);
+    if (!localStorage.getItem("seconds")) localStorage.setItem("seconds", defaultTime["seconds"]);
+    displayRemainingTime();
     document.getElementById("timerToggle").addEventListener("click", function() {
         if (started) {
-            stopTimer();
-            document.getElementById("timerToggle").innerText = "Start timer";
+            pauseTimer();
         }
         else {
-            beginTime = new Date();
-            seconds = document.getElementById("seconds").value * 1;
-            minutes = document.getElementById("minutes").value * 1;
-            hours = document.getElementById("hours").value * 1;
-            document.getElementById("timeRemaining").innerText = formatTime(hours, minutes, seconds);
-            timerLength = (hours * 3600 + minutes * 60 + seconds) * 1000;
-            finishTime = new Date(beginTime.getTime() + timerLength);
-            document.getElementById("timeStarted").innerText = beginTime.toLocaleTimeString();
-            document.getElementById("finishTime").innerText = finishTime.toLocaleTimeString();
-            document.getElementById("timerToggle").innerText = "Stop timer";
             startTimer();
         }
         started = !started;
     })
-    document.getElementById("timerReset").addEventListener("click", stopTimer);
+    document.getElementById("timerReset").addEventListener("click", resetTimer);
 }
 
 function startTimer() {
+    document.getElementById("timerToggle").innerText = "Pause timer";
+    const seconds = document.getElementById("seconds").value * 1;
+    const minutes = document.getElementById("minutes").value * 1;
+    const hours = document.getElementById("hours").value * 1;
+    // document.getElementById("timeRemaining").innerText = formatTime(hours, minutes, seconds);
+    timerLength = (hours * 3600 + minutes * 60 + seconds) * 1000;
+    beginTime = new Date();
+    finishTime = new Date(beginTime.getTime() + timerLength);
+    document.getElementById("timeStarted").innerText = beginTime.toLocaleTimeString();
+    document.getElementById("finishTime").innerText = finishTime.toLocaleTimeString();
     timerInterval = setInterval(function() {
         secondsPassed++;
         // Account for inaccuracy in timer interval
         timerLength -= 1000 + (Date.now()-beginTime.getTime()) - 1000 * secondsPassed;
-        hours = Math.floor(timerLength / 3600000);
+        const hours = Math.floor(timerLength / 3600000);
         // The +1 and -1 make it show x minutes, 0 seconds instead of x-1 minutes, 60 seconds
-        seconds = Math.round(((timerLength / 1000)+1) % 60)-1;
+        const seconds = Math.round(((timerLength / 1000)+1) % 60)-1;
         // "(seconds ? 0 : 1)" makes it show x minutes, 0 seconds instead of x-1 minutes, 0 seconds
-        minutes = Math.floor(((timerLength / 60000)) % 60) + (seconds ? 0 : 1);
-        document.getElementById("timeRemaining").innerText = formatTime(hours, minutes, seconds);
+        const minutes = Math.floor(((timerLength / 60000)) % 60) + (seconds ? 0 : 1);
+        localStorage.setItem("seconds", seconds);
+        localStorage.setItem("minutes", minutes);
+        localStorage.setItem("hours", hours);
+        // document.getElementById("timeRemaining").innerText = formatTime(hours, minutes, seconds);
+        document.getElementById("hours").value = hours;
+        document.getElementById("minutes").value = minutes;
+        document.getElementById("seconds").value = seconds;
         if (hours >= 1) {
             chrome.action.setBadgeText({ text: hours + 'h' + minutes });
         }
@@ -50,23 +61,45 @@ function startTimer() {
             chrome.action.setBadgeText({ text: minutes + ":" + seconds.toString().padStart(2, "0") });
         }
         if (timerLength < 0) {
-            stopTimer();
+            resetTimer();
         }
     }, 1000)
 }
 
-function stopTimer() {
+function pauseTimer() {
+    document.getElementById("timerToggle").innerText = "Start timer";
     clearInterval(timerInterval);
-    document.getElementById("timeRemaining").innerText = formatTime(0, 0, 0);
+    secondsPassed = 0;
+}
+
+function resetTimer() {
+    clearInterval(timerInterval);
+    secondsPassed = 0;
+    // document.getElementById("timeRemaining").innerText = formatTime(0, 0, 0);
     chrome.action.setBadgeText({});
     window.alert("Timer done!");
+    const defaultTime = getDefaultTime();
+    localStorage.setItem("hours", defaultTime["hours"]);
+    localStorage.setItem("minutes", defaultTime["minutes"]);
+    localStorage.setItem("seconds", defaultTime["seconds"]);
+    displayRemainingTime();
 }
 // aaaaa
 function formatTime(hours, minutes, seconds) {
     return hours.toString() + "h, " + minutes.toString() + "m, " + seconds.toString() + "s";
 }
 
+function getDefaultTime() {
+    return { "hours": 0, "minutes": 30, "seconds": 0 };
+}
+
+function displayRemainingTime() {
+    document.getElementById("hours").value = localStorage.getItem("hours");
+    document.getElementById("minutes").value = localStorage.getItem("minutes");
+    document.getElementById("seconds").value = localStorage.getItem("seconds");
+}
+
 addEventListener("DOMContentLoaded", initTimer);
 // chrome.action.setBadgeBackgroundColor({ color: 'green' });
 // TODO might delete this :)
-chrome.action.setBadgeText({});
+// chrome.action.setBadgeText({});
