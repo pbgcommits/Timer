@@ -5,6 +5,13 @@ let timerLength;
 let finishTime;
 let secondsPassed = 0;
 
+// None of this is working :D :D :D
+// const keepAlive = () => setInterval(chrome.runtime.getPlatformInfo, 20e3);
+// // chrome.runtime.onStartup.addListener(createTimerInterval);
+// chrome.runtime.onStartup.addListener(keepAlive);
+// keepAlive();
+// // createTimerInterval();
+
 function initTimer() {
     // Default timer is 30 minutes
     const defaultTime = getDefaultTime();
@@ -37,7 +44,15 @@ function startTimer() {
     document.getElementById("finishTime").innerText = finishTime.toLocaleTimeString();
     document.getElementById("timeStarted").style = "";
     document.getElementById("finishTime").style = "";
+    // timerInterval = createTimerInterval();
+    createTimerInterval();
+    // chrome.action.onClicked.addListener(async () => {createTimerInterval()});
+}
+
+function createTimerInterval() {
+    console.log("creating timer");
     timerInterval = setInterval(function() {
+        // chrome.runtime.getPlatformInfo;
         secondsPassed++;
         // Account for inaccuracy in timer interval
         timerLength -= 1000 + (Date.now()-beginTime.getTime()) - 1000 * secondsPassed;
@@ -88,15 +103,18 @@ function resetTimer() {
     localStorage.setItem("hours", defaultTime["hours"]);
     localStorage.setItem("minutes", defaultTime["minutes"]);
     localStorage.setItem("seconds", defaultTime["seconds"]);
+    started = false;
+    document.getElementById("timerToggle").innerText = "Start timer";
     displayRemainingTime();
 }
+
 // aaaaa
 function formatTime(hours, minutes, seconds) {
     return hours.toString() + "h, " + minutes.toString() + "m, " + seconds.toString() + "s";
 }
 
 function getDefaultTime() {
-    return { "hours": 0, "minutes": 30, "seconds": 0 };
+    return { "hours": 0, "minutes": 0, "seconds": 30 };
 }
 
 function displayRemainingTime() {
